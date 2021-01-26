@@ -17,7 +17,7 @@ Api Documentation
 urn:tos
 
 
-**License:** [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0)
+**License:** GNU General Public License v3.0
 
 ### /people/
 
