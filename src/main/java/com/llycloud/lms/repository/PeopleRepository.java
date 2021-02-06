@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author Akide Liu
@@ -16,5 +17,7 @@ import java.util.List;
 public interface PeopleRepository extends JpaRepository<People, Integer> , JpaSpecificationExecutor<People> {
 
     List<People> findByUserLevel(Integer roleId);
+
+    Optional<People> findByName(String username);
 
 }
