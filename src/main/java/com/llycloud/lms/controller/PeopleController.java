@@ -5,9 +5,8 @@ import com.llycloud.lms.model.entity.People;
 import com.llycloud.lms.model.enums.PersistentLayerErrorEnum;
 import com.llycloud.lms.model.support.ApiResultBean;
 import com.llycloud.lms.service.PeopleService;
+import com.llycloud.lms.service.mapper.PeopleMapper;
 import org.jetbrains.annotations.NotNull;
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -18,7 +17,7 @@ import java.util.stream.Collectors;
 
 /**
  * @author Akide Liu
- * @date 2021-01-16 16:51
+ * Date 2021-01-16
  */
 @RestController
 @RequestMapping("/people")
@@ -27,8 +26,8 @@ public class PeopleController {
     @Resource
     private PeopleService peopleService;
 
-    @Autowired
-    private ModelMapper modelMapper;
+    @Resource
+    private PeopleMapper peopleMapper;
 
 
     @GetMapping("/")
@@ -87,7 +86,7 @@ public class PeopleController {
     @PostMapping(path = "/", consumes = "application/json", produces = "application/json")
     public ApiResultBean createOrUpdatePeople(@Valid @RequestBody PeopleDTO peopleDTO){
 
-        People people = convertToEntity(peopleDTO);
+        People people = peopleMapper.convertToEntity(peopleDTO);
 
         People newPeople = peopleService.createOrUpdatePeople(people);
 
@@ -107,19 +106,13 @@ public class PeopleController {
     }
 
 
-    private PeopleDTO convertToDto(People people) {
-        return modelMapper.map(people, PeopleDTO.class);
-    }
-
-    private People convertToEntity(PeopleDTO peopleDTO) { return modelMapper.map(peopleDTO, People.class); }
-
     private List<?> listCheckShowSubjectResultConstructor(List<People> innerPeopleList
             , Optional<Boolean> innerIsShowSubject) {
         if (innerIsShowSubject.isPresent() && innerIsShowSubject.get()) {
             return innerPeopleList;
         } else {
             return innerPeopleList.stream()
-                    .map(this::convertToDto)
+                    .map(peopleMapper::convertToDto)
                     .collect(Collectors.toList());
         }
     }
@@ -129,7 +122,7 @@ public class PeopleController {
         if (isShowSubject.isPresent() && isShowSubject.get()) {
             return ApiResultBean.successData(allPeople);
         } else {
-            return ApiResultBean.success(convertToDto(allPeople.get()));
+            return ApiResultBean.success(peopleMapper.convertToDto(allPeople.get()));
         }
     }
 
