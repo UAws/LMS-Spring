@@ -10,6 +10,7 @@ import com.llycloud.lms.service.SubjectService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -143,6 +144,20 @@ class LmsSpringApplicationTests {
         Subject t = subjectService.createOrUpdateSubject(subject);
 
         subjectService.deleteSubject(t.getSubjectId());
+    }
+
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    @Test
+    public void testBCryptPasswordEncoder() {
+        String password = "123456";
+
+        String encode = bCryptPasswordEncoder.encode(password);
+
+        boolean matches = bCryptPasswordEncoder.matches(password, "$2a$10$39xr0AjuECEAPlf4C3C4o.ZLYN0X7IGEUX.BZ.nbrjXKtaJSIO8VO");
+
+        System.out.println(matches);
     }
 
 }

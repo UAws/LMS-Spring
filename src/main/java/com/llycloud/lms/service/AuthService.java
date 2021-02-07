@@ -6,6 +6,7 @@ import com.llycloud.lms.model.dto.UserLoginDTO;
 import com.llycloud.lms.model.dto.UserRegisterDTO;
 import com.llycloud.lms.model.entity.People;
 import com.llycloud.lms.model.enums.UserLevelEnum;
+import com.llycloud.lms.repository.PeopleRepository;
 import com.llycloud.lms.service.mapper.PeopleMapper;
 import com.llycloud.lms.utils.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,9 @@ public class AuthService {
 
     @Autowired
     private PeopleMapper peopleMapper;
+
+    @Autowired
+    private PeopleRepository peopleRepository;
 
     public JwtUser authLogin(UserLoginDTO userLogin) {
 
@@ -96,7 +100,7 @@ public class AuthService {
                 .isActive(true)
                 .build();
 
-        peopleService.createOrUpdatePeople(people);
+        peopleRepository.saveAndFlush(people);
 
 
     }
