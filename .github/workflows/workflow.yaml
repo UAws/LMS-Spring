@@ -36,14 +36,14 @@ jobs:
         run: mysql -uroot -p123456 -h"127.0.0.1" -P"$PORT" LMS < Script/Sql/mock_db.sql
 
       - name: Set up JDK
-        env:
-          # Spring Boot property 
-          DB_PORT: ${{ job.services.mariadb.ports[3306] }}
         uses: actions/setup-java@v1
         with:
           java-version: '11'
           java-package: jdk
       - name: Maven Package
+        env:
+          # Spring Boot property
+          DB_PORT: ${{ job.services.mariadb.ports[3306] }}
         run: mvn -B clean package
       - name: Maven Verify
         run: mvn -B clean verify -DskipTests
