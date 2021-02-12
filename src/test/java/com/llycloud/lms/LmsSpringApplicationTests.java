@@ -106,7 +106,7 @@ class LmsSpringApplicationTests {
     }
 
 
-    @Test
+    // @Test
     @Transactional
     @Rollback(value = false)
     public void dbLayerCreatedDataDestroyer() {
