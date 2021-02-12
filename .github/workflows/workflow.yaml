@@ -77,12 +77,10 @@ jobs:
         run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
 
       - uses: actions/download-artifact@master
-      - name: Download artifact
         with:
-          name: my-artifact
+          name: app.jar
           path: ./
-
-      - run: ls -lh 
+      - run: ls -lh
 
 
       - name: Building Docker Image
