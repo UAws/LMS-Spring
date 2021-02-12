@@ -81,7 +81,9 @@ jobs:
         with:
           name: my-artifact
           path: ./
-      - run: ls -lh ./
+
+      - run: ls -lh 
+
 
       - name: Building Docker Image
         run: |
