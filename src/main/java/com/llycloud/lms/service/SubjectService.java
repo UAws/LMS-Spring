@@ -44,7 +44,7 @@ public class SubjectService {
 
         }
 
-            Subject newSubject = result.get();
+        Subject newSubject = result.orElseGet(Subject::new);
 
             newSubject.setName(ReceivedSubject.getName());
 
