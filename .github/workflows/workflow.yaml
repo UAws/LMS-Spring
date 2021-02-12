@@ -76,6 +76,13 @@ jobs:
       - name: Docker Hub Sign-in
         run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
 
+      - uses: actions/download-artifact@master
+      - name: Download artifact
+        with:
+          name: my-artifact
+          path: ./
+        run: ls -lh ./
+
       - name: Building Docker Image
         run: |
           docker build -t $REPO:latest -t $REPO:$GITHUB_RUN_ID .
