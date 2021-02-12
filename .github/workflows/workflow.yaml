@@ -31,13 +31,19 @@ jobs:
           done
 
       - name: Create Mock Database structure And import Mock Data
-        run: mysql -uroot -p123456 LMS < Script/Sql/mock_db.sql
+        env:
+          PORT: ${{ job.services.mariadb.ports[3306] }}
+        run: mysql -uroot -p123456 -h"127.0.0.1" -P"$PORT" LMS < Script/Sql/mock_db.sql
 
       - name: Set up JDK
+        env:
+          PORT: ${{ job.services.mariadb.ports[3306] }}
         uses: actions/setup-java@v1
         with:
           java-version: '11'
           java-package: jdk
+      - name: Set Spring Boot Properties
+        run: export DB_PORT=$PORT
       - name: Maven Package
         run: mvn -B clean package
       - name: Maven Verify
