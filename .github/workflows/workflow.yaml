@@ -80,7 +80,7 @@ jobs:
         uses: actions/download-artifact@master
         with:
           name: lms-spring.jar
-          path: /
+          path: ./
       - run: ls -lh
 
 
