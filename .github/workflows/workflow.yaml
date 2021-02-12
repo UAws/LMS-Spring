@@ -33,6 +33,10 @@ jobs:
       - name: Create Mock Database structure And import Mock Data
         env:
           PORT: ${{ job.services.mariadb.ports[3306] }}
+<<<<<<< HEAD
+=======
+          DB_PORT: ${{ job.services.mariadb.ports[3306] }}
+>>>>>>> dev
         run: mysql -uroot -p123456 -h"127.0.0.1" -P"$PORT" LMS < Script/Sql/mock_db.sql
 
       - name: Set up JDK
