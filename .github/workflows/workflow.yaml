@@ -76,9 +76,10 @@ jobs:
       - name: Docker Hub Sign-in
         run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
 
-      - uses: actions/download-artifact@master
+      - name: Download artifact
+        uses: actions/download-artifact@master
         with:
-          name: app.jar
+          name: lms-spring.jar
           path: ./
       - run: ls -lh
 
