@@ -17,7 +17,7 @@ jobs:
           sudo systemctl start mysql.service
           mysql -uroot -proot -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '123456';"
           mysql -e 'create database LMS;'
-          
+
       - name: Create Mock Database structure And import Mock Data
         run: mysql -uroot -p123456 -h"127.0.0.1" -P3306 LMS < Script/Sql/mock_db.sql
 
@@ -36,9 +36,9 @@ jobs:
             ${{ runner.os }}-maven-
 
       - name: Maven Package
-        env:
+        #env:
           # Spring Boot property
-#          DB_PORT: ${{ job.services.mariadb.ports[3306] }}
+          # DB_PORT: ${{ job.services.mariadb.ports[3306] }}
         run: mvn -B clean package
       - name: Maven Verify
         run: mvn -B clean verify -DskipTests
