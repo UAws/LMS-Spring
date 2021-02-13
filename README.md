@@ -8,6 +8,12 @@ Spring-boot + Vue reimplementation of OOP-Project https://github.com/UAws/OOP-Pr
 
 front / back-end separated rest web application
 
+## Build status：
+
+| **master**      | ![LMS CI Test](https://github.com/UAws/LMS-Spring/workflows/LMS%20CI%20Test/badge.svg?branch=master) |
+| --------------- | ------------------------------------------------------------ |
+| **development** | ![LMS CI Test](https://github.com/UAws/LMS-Spring/workflows/LMS%20CI%20Test/badge.svg?branch=dev) |
+
 
 
 ## Dependency

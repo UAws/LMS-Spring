@@ -7,33 +7,19 @@ jobs:
   test:
     name: Unit-Test
     runs-on: ubuntu-20.04
-    services:
-      mariadb:
-        image: mariadb:latest
-        ports:
-          - 3306
-        env:
-          MYSQL_USER: user
-          MYSQL_PASSWORD: 123456
-          MYSQL_DATABASE: LMS
-          MYSQL_ROOT_PASSWORD: 123456
-        options: --health-cmd="mysqladmin ping" --health-interval=5s --health-timeout=2s --health-retries=3
 
 
     steps:
       - uses: actions/checkout@v2
-      - name: Verify MariaDB connection
-        env:
-          PORT: ${{ job.services.mariadb.ports[3306] }}
-        run: |
-          while ! mysqladmin ping -h"127.0.0.1" -P"$PORT" --silent; do
-            sleep 1
-          done
 
+      - name: Setup Mysql
+        run: |
+          sudo systemctl start mysql.service
+          mysql -uroot -proot -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '123456';"
+          mysql -e 'create database LMS;'
+          
       - name: Create Mock Database structure And import Mock Data
-        env:
-          PORT: ${{ job.services.mariadb.ports[3306] }}
-        run: mysql -uroot -p123456 -h"127.0.0.1" -P"$PORT" LMS < Script/Sql/mock_db.sql
+        run: mysql -uroot -p123456 -h"127.0.0.1" -P3306 LMS < Script/Sql/mock_db.sql
 
       - name: Set up JDK
         uses: actions/setup-java@v1
@@ -52,7 +38,7 @@ jobs:
       - name: Maven Package
         env:
           # Spring Boot property
-          DB_PORT: ${{ job.services.mariadb.ports[3306] }}
+#          DB_PORT: ${{ job.services.mariadb.ports[3306] }}
         run: mvn -B clean package
       - name: Maven Verify
         run: mvn -B clean verify -DskipTests
