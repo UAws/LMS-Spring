@@ -18,7 +18,7 @@ public class ApiResultBean implements Serializable {
 
     public static final int Forbidden = -3;
 
-    private String msg = "Request SUCCESS";
+    private String message = "Request SUCCESS";
 
     private int code = SUCCESS;
 
@@ -28,8 +28,8 @@ public class ApiResultBean implements Serializable {
         super();
     }
 
-    private ApiResultBean(String msg, Object data, int code) {
-        this.msg = msg;
+    private ApiResultBean(String message, Object data, int code) {
+        this.message = message;
         this.data = data;
         this.code = code;
     }
@@ -61,23 +61,23 @@ public class ApiResultBean implements Serializable {
     public static ApiResultBean error(String msg) {
         ApiResultBean ApiResultBean = new ApiResultBean();
         ApiResultBean.setCode(FAIL);
-        ApiResultBean.setMsg(msg);
+        ApiResultBean.setMessage(msg);
         return ApiResultBean;
     }
 
     public static ApiResultBean error(String msg, Integer code) {
         ApiResultBean ApiResultBean = new ApiResultBean();
         ApiResultBean.setCode(code);
-        ApiResultBean.setMsg(msg);
+        ApiResultBean.setMessage(msg);
         return ApiResultBean;
     }
 
-    public String getMsg() {
-        return msg;
+    public String getMessage() {
+        return message;
     }
 
-    public void setMsg(String msg) {
-        this.msg = msg;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public int getCode() {
