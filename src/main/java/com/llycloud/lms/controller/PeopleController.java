@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -109,10 +110,13 @@ public class PeopleController {
     private List<?> listCheckShowSubjectResultConstructor(List<People> innerPeopleList
             , Optional<Boolean> innerIsShowSubject) {
         if (innerIsShowSubject.isPresent() && innerIsShowSubject.get()) {
-            return innerPeopleList;
+            return innerPeopleList.stream()
+                    .map(peopleMapper::convertToDto)
+                    .collect(Collectors.toList());
         } else {
             return innerPeopleList.stream()
                     .map(peopleMapper::convertToDto)
+                    .peek(p -> p.setBelongedSubjects(new HashSet<>()))
                     .collect(Collectors.toList());
         }
     }
@@ -120,8 +124,9 @@ public class PeopleController {
     @NotNull
     private ApiResultBean checkShowSubjectResultConstructor(Optional<Boolean> isShowSubject, Optional<People> allPeople) {
         if (isShowSubject.isPresent() && isShowSubject.get()) {
-            return ApiResultBean.successData(allPeople);
+            return ApiResultBean.successData(peopleMapper.convertToDto(allPeople.get()));
         } else {
+            allPeople.get().setBelongedSubjects(new HashSet<>());
             return ApiResultBean.success(peopleMapper.convertToDto(allPeople.get()));
         }
     }

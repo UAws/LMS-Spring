@@ -5,6 +5,7 @@ import com.llycloud.lms.model.dto.JwtUser;
 import com.llycloud.lms.model.dto.PeopleDTO;
 import com.llycloud.lms.model.dto.UserLoginDTO;
 import com.llycloud.lms.model.dto.UserRegisterDTO;
+import com.llycloud.lms.model.enums.PersistentLayerErrorEnum;
 import com.llycloud.lms.model.support.ApiResultBean;
 import com.llycloud.lms.service.AuthService;
 import io.swagger.annotations.Api;
@@ -36,12 +37,27 @@ public class AuthController {
 
         JwtUser jwtUser = authService.authLogin(userLogin);
 
-        HashMap<String, Object> authInfo = new HashMap<>(2){{
-            put("token", SecurityConstants.TOKEN_PREFIX + jwtUser.getToken());
-            put("user", jwtUser.getUser());
-        }};
 
-        return new ResponseEntity<>(ApiResultBean.success(authInfo), HttpStatus.OK);
+        if (jwtUser.getUser().getIsActive()) {
+
+            HashMap<String, Object> authInfo = new HashMap<>(2) {{
+                put("token", SecurityConstants.TOKEN_PREFIX + jwtUser.getToken());
+                put("user", jwtUser.getUser());
+            }};
+
+
+            return new ResponseEntity<>(ApiResultBean.success(authInfo), HttpStatus.OK);
+
+        } else {
+            return new ResponseEntity<>(
+                    ApiResultBean.error(
+                            PersistentLayerErrorEnum.USER_NOT_ACTIVE_ERROR.
+                                    getMessage("User Name ", jwtUser.getUser().getName())
+                            , PersistentLayerErrorEnum.USER_NOT_ACTIVE_ERROR.getErrorCode())
+                    , HttpStatus.OK
+            );
+        }
+
 
     }
 

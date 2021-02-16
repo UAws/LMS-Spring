@@ -142,11 +142,21 @@ public class PeopleService {
 
 
         newPeople.setName(ReceivedPeople.getName());
-        newPeople.setPassword(bCryptPasswordEncoder.encode(ReceivedPeople.getPassword()));
         newPeople.setIsActive(ReceivedPeople.getIsActive());
         newPeople.setTitle(ReceivedPeople.getTitle());
         newPeople.setUserLevel(ReceivedPeople.getUserLevel());
 
+        /*
+         * check the is the password encoded
+         */
+        if (ReceivedPeople.getPassword().equals(newPeople.getPassword())) {
+
+            newPeople.setPassword(ReceivedPeople.getPassword());
+
+        }else {
+            newPeople.setPassword(bCryptPasswordEncoder.encode(ReceivedPeople.getPassword()));
+
+        }
 
         return peopleRepository.saveAndFlush(newPeople);
     }
