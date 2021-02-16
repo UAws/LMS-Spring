@@ -11,7 +11,18 @@ public enum PersistentLayerErrorEnum {
                     "But there is no such Record(s) existed, " +
                     "Arguments :  ",
             "Following data are not found from such sql"),
+
+    USER_NOT_ACTIVE_ERROR(
+            "USER_NOT_ACTIVE_ERROR",
+            30002,
+            "Database operational and handled request properly, " +
+                    "But there is user is not active," +
+                    "Contact the administrator to unlock this account " +
+                    "Arguments :  ",
+            "Following data are not found from such sql"),
+
     ;
+
 
 
     private final String key;
